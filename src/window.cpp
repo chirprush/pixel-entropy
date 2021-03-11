@@ -17,3 +17,16 @@ Window::~Window() {
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 }
+
+void Window::clear(const Color &color) {
+	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+	SDL_RenderClear(renderer);
+}
+
+void Window::present() {
+	SDL_RenderPresent(renderer);
+}
+
+void Window::delay(int ms) {
+	SDL_Delay(ms);
+}
