@@ -1,8 +1,6 @@
 #ifndef EVENT_HPP
 #define EVENT_HPP
 
-#include <string>
-
 struct QuitEvent {
 	QuitEvent();
 };

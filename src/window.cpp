@@ -1,6 +1,5 @@
-#include "window.hpp"
 #include <SDL2/SDL.h>
-#include <assert.h>
+#include "window.hpp"
 
 Window::Window(const char *title, int w, int h) {
 	this->w = w;

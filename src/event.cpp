@@ -1,5 +1,5 @@
-#include "event.hpp"
 #include <SDL2/SDL.h>
+#include "event.hpp"
 
 static constexpr MouseButton code_to_button(int code) {
 	switch (code) {
