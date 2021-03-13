@@ -14,6 +14,8 @@ struct Window {
 	Window(const char *title, int w, int h);
 	~Window();
 
+	void renderRect(int x, int y, int w, int h, const Color &color);
+
 	void clear(const Color &color);
 	void present();
 

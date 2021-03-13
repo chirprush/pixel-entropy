@@ -1,4 +1,4 @@
-CC = g++
+CXX = g++
 CFLAGS = -g -Wall -Werror
 LDFLAGS =
 
@@ -11,10 +11,10 @@ cfiles = $(wildcard src/*.cpp)
 objects = $(cfiles:src/%.cpp=bin/%.o)
 
 main: $(objects)
-	$(CC) -o $(OUTPUT) $(objects) $(CFLAGS) $(LDFLAGS)
+	$(CXX) -o $(OUTPUT) $(objects) $(CFLAGS) $(LDFLAGS)
 
 $(objects):
-	$(CC) -c $(@:bin/%.o=src/%.cpp) -o $@ $(CFLAGS) $(LDFLAGS)
+	$(CXX) -c $(@:bin/%.o=src/%.cpp) -o $@ $(CFLAGS) $(LDFLAGS)
 
 run: main
 	$(OUTPUT)

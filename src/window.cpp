@@ -18,6 +18,16 @@ Window::~Window() {
 	SDL_Quit();
 }
 
+void Window::renderRect(int x, int y, int w, int h, const Color &color) {
+	SDL_Rect rect;
+	rect.x = x;
+	rect.y = y;
+	rect.w = w;
+	rect.h = h;
+	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+	SDL_RenderFillRect(renderer, &rect);
+}
+
 void Window::clear(const Color &color) {
 	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 	SDL_RenderClear(renderer);

@@ -24,6 +24,12 @@ bool Event::get_event(Event *e) {
 		e->quit = QuitEvent();
 		break;
 	}
+	case SDL_KEYDOWN: {
+		e->type = EventType::KeyDown;
+		const char *name = SDL_GetKeyName(sdl_event.key.keysym.sym);
+		e->key_down = KeyDownEvent(name);
+		break;
+	}
 	case SDL_MOUSEBUTTONDOWN: {
 		e->type = EventType::MouseDown;
 		MouseButton button = code_to_button(sdl_event.button.button);
@@ -33,6 +39,12 @@ bool Event::get_event(Event *e) {
 	case SDL_MOUSEMOTION: {
 		e->type = EventType::MouseMove;
 		e->mouse_move = MouseMoveEvent(sdl_event.motion.x, sdl_event.motion.y);
+		break;
+	}
+	case SDL_MOUSEBUTTONUP: {
+		e->type = EventType::MouseUp;
+		MouseButton button = code_to_button(sdl_event.button.button);
+		e->mouse_up = MouseUpEvent(button, sdl_event.motion.x, sdl_event.motion.y);
 		break;
 	}
 	default: {
@@ -46,6 +58,10 @@ bool Event::get_event(Event *e) {
 
 QuitEvent::QuitEvent() {}
 
+KeyDownEvent::KeyDownEvent(const char *name) {
+	this->name = name;
+}
+
 MouseDownEvent::MouseDownEvent(MouseButton button, int x, int y) {
 	this->button = button;
 	this->x = x;
@@ -53,6 +69,12 @@ MouseDownEvent::MouseDownEvent(MouseButton button, int x, int y) {
 }
 
 MouseMoveEvent::MouseMoveEvent(int x, int y) {
+	this->x = x;
+	this->y = y;
+}
+
+MouseUpEvent::MouseUpEvent(MouseButton button, int x, int y) {
+	this->button = button;
 	this->x = x;
 	this->y = y;
 }
