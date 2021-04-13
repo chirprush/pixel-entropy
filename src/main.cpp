@@ -1,5 +1,7 @@
 #include <SDL2/SDL.h>
 #include <vector>
+#include <cstdlib>
+#include <ctime>
 #include "state.hpp"
 #include "window.hpp"
 #include "color.hpp"
@@ -9,10 +11,11 @@ constexpr Color BACKGROUND_COLOR = 0x1d2021;
 constexpr int delay = 1000 / 30;
 
 int main(int argc, char *argv[]) {
-	std::vector<Color> colors = { BACKGROUND_COLOR, Color(0x02006c), Color(0x61afef), Color(0xefefef) };
+	std::vector<Color> colors = { BACKGROUND_COLOR, Color(0xfe2712), Color(0xffa836), Color(0xfffd37), Color(0x458b00), Color(0x0020b2), Color(0x551a8b) };
 	Window window = Window("Entropy", 600, 600);
 	State state = State(window, colors);
 	Event e = {};
+	srand(time(NULL));
 	while (window.running) {
 		while (Event::get_event(&e)) {
 			switch (e.type) {

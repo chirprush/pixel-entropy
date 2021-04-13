@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <cstdlib>
 #include "state.hpp"
 #include "window.hpp"
 #include "color.hpp"
@@ -14,12 +15,27 @@ State::State(const Window &window, const std::vector<Color> &colors) {
 	this->cols = window.w / pixl;
 	this->rows = window.h / pixl;
 	std::vector<std::vector<unsigned char>> buffer(rows, std::vector<unsigned char>(cols, 0));
+	std::vector<std::vector<unsigned char>> swap(rows, std::vector<unsigned char>(cols, 0));
 	this->buffer = buffer;
+	this->swap = swap;
 	this->colors = colors;
 }
 
-unsigned char State::at(int x, int y) {
+void State::clear() {
+	for (int y = 0; y < rows; ++y) {
+		for (int x = 0; x < cols; ++x) {
+			buffer[y][x] = 0;
+			swap[y][x] = 0;
+		}
+	}
+}
+
+unsigned char State::get(int x, int y) {
 	return buffer[(y + rows) % rows][(x + cols) % cols];
+}
+
+void State::set(int x, int y, unsigned char value) {
+	swap[(y + rows) % rows][(x + cols) % cols] = value;
 }
 
 void State::render(Window &window) const {
@@ -49,14 +65,18 @@ void State::render(Window &window) const {
 void State::update() {
 	for (int y = 0; y < rows; ++y) {
 		for (int x = 0; x < cols; ++x) {
-			int sum = 0;
-			for (int dy = -1; dy <= 1; dy += 2) {
-				for (int dx = -1; dx <= 1; dx += 2) {
-					sum += this->at(x + dx, y + dy);
-				}
+			int value = get(x, y);
+			if (value != 0) {
+				set(x, y, value);
+				int dx = (rand() % 3) - 1;
+				int dy = (rand() % 3) - 1;
+				set(x + dx, y + dy, value);
 			}
-			int avg = sum / 4;
-			buffer[y][x] = std::max(avg, (int)buffer[y][x]);
+		}
+	}
+	for (int y = 0; y < rows; ++y) {
+		for (int x = 0; x < cols; ++x) {
+			buffer[y][x] = swap[y][x];
 		}
 	}
 }
@@ -67,6 +87,8 @@ void State::keyDown(const KeyDownEvent &e) {
 		paused = !paused;
 	} else if (key == "D") {
 		showDrawColor = !showDrawColor;
+	} else if (key == "C") {
+		clear();
 	}
 }
 

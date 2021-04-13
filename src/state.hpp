@@ -6,7 +6,7 @@
 #include "window.hpp"
 #include "event.hpp"
 
-constexpr int pixl = 20;
+constexpr int pixl = 5;
 
 constexpr int drawColorPadding = 5;
 constexpr int drawColorBorderPadding = 10;
@@ -22,6 +22,7 @@ struct State {
 	int cols;
 	int rows;
 	std::vector<std::vector<unsigned char>> buffer;
+	std::vector<std::vector<unsigned char>> swap;
 
 	// The length of colors should never really change, so I'm not
 	// quite the happiest using std::vector here, but the alternative
@@ -31,7 +32,10 @@ struct State {
 
 	State(const Window &window, const std::vector<Color> &colors);
 
-	unsigned char at(int x, int y);
+	void clear();
+
+	unsigned char get(int x, int y);
+	void set(int x, int y, unsigned char value);
 
 	void render(Window &window) const;
 	void update();
